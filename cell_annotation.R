@@ -1,8 +1,14 @@
-cell_anno <- function(){
+anno <- function(){
         library(Seurat)
         library(ggplot2)
-        obj <- readRDS('xenium.obj_assign_detail.reanno.Rds')
-        levels(obj)  #26 Levels
+        object <- readRDS('/BIO3/KD_Xenium/xenium.obj_assign_detail.Rds')
+        levels(object)  #48 Levels -> 22 Levels
+        table(Idents(object))
+
+        obj=RenameIdents(object, "PT"="Proximal Tubule", "DTL"="Descending Thin Limb" )
+
+        levels(obj)
+        saveRDS(obj, "xenium.obj_assign_detail.reanno.Rds")
 
         cell_annotations <- data.frame(
           cell_id = names(Idents(obj)),         # cell ID 
@@ -10,3 +16,5 @@ cell_anno <- function(){
         )
         head(cell_annotations)
         write.csv(cell_annotations, file = "cell_annotations.csv", row.names = FALSE)
+}
+
